@@ -1,0 +1,2 @@
+class ParseVenue < ApplicationRecord
+end
