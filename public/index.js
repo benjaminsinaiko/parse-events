@@ -72,8 +72,15 @@ var ParseVenuesPage = {
   template: "#parse-venues",
   data: function() {
     return {
-      message: "Get Venues Page!"
+      message: "Get Venues Page!",
+      parseVenues: {}
     };
+  },
+  created: function() {
+    axios.get("/v1/parse/venues").then(response => {
+      this.parseVenues = response.data;
+      console.log("venues: ", this.parseVenues);
+    });
   },
   mounted: function() {},
   methods: {},

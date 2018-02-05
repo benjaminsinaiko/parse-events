@@ -173,5 +173,14 @@
 <template id="parse-venues">
   <div>
     <h1>{{ message }}</h1>
+    <b-container>
+      <div>
+        <b-card v-for="parseVenue in parseVenues"
+                :title="parseVenue.venueName"
+                :sub-title="parseVenue.Address">
+            <b-button variant="primary" >Save Venue</b-button>
+        </b-card>
+      </div>
+    </b-container>
   </div>
 </template>
