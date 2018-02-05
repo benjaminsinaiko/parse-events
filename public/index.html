@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parse Events</title>
+  <!-- Add this to <head> -->
+  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+  <!-- vue.js -->
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="index.js" defer></script>
+  <!-- Add this after vue.js -->
+  <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+  <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+</head>
+
+
+<body>
+  <div id="app">
+
+    <!-- navbar-1.vue -->
+    <b-navbar toggleable="md" type="dark" variant="primary">
+
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+      <b-navbar-brand href="/#/">NavBar</b-navbar-brand>
+
+      <b-collapse is-nav id="nav_collapse">
+
+        <b-navbar-nav>
+          <b-nav-item href="/#/add-event">Add Event</b-nav-item>
+          <b-nav-item href="/#/parse-events">Parse Events</b-nav-item>
+          <b-nav-item href="/#/" disabled>Disabled</b-nav-item>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+
+          <b-nav-form>
+            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
+            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          </b-nav-form>
+
+          <b-nav-item-dropdown text="Lang" right>
+            <b-dropdown-item href="#">EN</b-dropdown-item>
+            <b-dropdown-item href="#">ES</b-dropdown-item>
+            <b-dropdown-item href="#">RU</b-dropdown-item>
+            <b-dropdown-item href="#">FA</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item-dropdown right>
+            <!-- Using button-content slot -->
+            <template slot="button-content">
+              <em>User</em>
+            </template>
+            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item href="#">Signout</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+
+      </b-collapse>
+    </b-navbar>
+
+    <router-view></router-view>
+  </div>
+</body>
+</html>
+
+<template id="home-page">
+  <div>
+    <h1>{{ message }}</h1>
+  </div>
+</template>
+
+<!-- Add Events Page -->
+
+<template id="add-event-page">
+  <div>
+    <h1>{{ message }}</h1>
+
+    <!-- Add Event Form -->
+    <b-container>
+      <b-row class="my-1">
+        <b-col sm="3"><label>Event Title:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.eventTitle"
+                        type="text"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>Artist Name:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.artistName"
+                        type="text"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>Venue Name:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.venueName"
+                        type="text"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>Event ID:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.eventId"
+                        type="number"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>Start Date:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.startDate"
+                        type="date"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>Start Time:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.startTime"
+                        type="time"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>End Date:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.endDate"
+                        type="date"></b-col>
+      </b-row>
+      <b-row class="my-1">
+        <b-col sm="3"><label>End Time:</label></b-col>
+        <b-col sm="6">
+          <b-form-input v-model="eventDetails.endTime"
+                        type="time"></b-col>
+      </b-row>
+      <b-button type="submit" variant="primary" v-on:click="submit()">Submit</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
+    </b-container>
+
+  </div>
+</template>
+
+<!-- Parse Events Page -->
+
+<template id="parse-events-page">
+  <div>
+    <h1>{{ message }}</h1>
+
+    <b-container class="bv-example-row">
+    <b-row>
+        <b-col cols="5" >
+          <b-form-select v-model="selected" class="mb-3" >
+            <option :value="null">Please select an option</option>
+            <option v-for="venue in venues" :value="venue.objectId">{{ venue.venueName }}</option>
+          </b-form-select>
+          <div>Venue: <strong>{{ selected }}</strong></div>
+        </b-col>
+    </b-row>
+    <br>
+    <b-row>
+      <b-button variant="primary" v-on:click="getEvents()">Get Events</b-button>
+    </b-row>
+    <br>
+    <b-row>
+      <b-card header="Default" class="text-center">
+        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </b-card>
+    </b-row>
+</b-container>
+
+  </div>
+</template>
