@@ -68,11 +68,24 @@ var ParseEventsPage = {
   computed: {}
 };
 
+var ParseVenuesPage = {
+  template: "#parse-venues",
+  data: function() {
+    return {
+      message: "Get Venues Page!"
+    };
+  },
+  mounted: function() {},
+  methods: {},
+  computed: {}
+};
+
 var router = new VueRouter({
   routes: [
     { path: "/", component: HomePage },
     { path: "/add-event", component: AddEventPage },
-    { path: "/parse-events", component: ParseEventsPage }
+    { path: "/parse-events", component: ParseEventsPage },
+    { path: "/parse-venues", component: ParseVenuesPage }
   ]
 });
 
